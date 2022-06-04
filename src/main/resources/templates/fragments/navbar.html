@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="../../static/layui/css/layui.css">
+    <title></title>
+</head>
+<body>
+<div th:fragment="navbar">
+    <ul class="layui-nav layui-nav-tree" lay-filter="side-nav">
+        <li class="layui-nav-item" id="dashboard"><a href="javascript:" onclick="loadIframe('/dashboard')">仪表盘</a></li>
+        <li class="layui-nav-item layui-nav-itemed">
+            <a href="javascript:">基本信息管理</a>
+            <dl class="layui-nav-child">
+                <dd id="customer"><a href="javascript:" onclick="loadIframe('/customer')">客户管理</a></dd>
+                <dd id="goods"><a href="javascript:" onclick="loadIframe('/goods')">商品管理</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item layui-nav-itemed">
+            <a href="javascript:">系统管理</a>
+            <dl class="layui-nav-child">
+                <dd id="purchase"><a href="javascript:" onclick="loadIframe('/purchase')">进货管理</a></dd>
+                <dd id="order"><a href="javascript:" onclick="loadIframe('/order')">订单管理</a></dd>
+                <dd id="return_goods"><a href="javascript:" onclick="loadIframe('/return_goods')">退货单管理</a></dd>
+                <dd id="exchange_goods"><a href="javascript:" onclick="loadIframe('/exchange_goods')">换货单管理</a></dd>
+            </dl>
+        </li>
+    </ul>
+    <script src="../../static/layui/layui.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script>
+        layui.use('element', function () {
+            var element = layui.element
+                , $ = layui.$; //导航的hover效果、二级菜单等功能，需要依赖element模块
+
+            var hash = location.hash;
+            var url = hash.substring(1, hash.length);
+            $("#content").attr("src", url); //别忘了加id
+            var id = '#' + url.substring(1, url.length);
+            $(id).addClass("layui-this");
+        });
+
+        function loadIframe(url) {
+            //获取url链接
+            var u = window.location.href;
+            //因为每次获取的链接中都有之前的旧锚点，
+            //所以需要把#之后的旧锚点去掉再来加新的锚点（即传入的url参数）
+            var end = u.indexOf("#");
+            var rurl = u.substring(0, end);
+            //设置新的锚点
+            window.location.href = rurl + "#" + url;
+            $("#content").attr("src", url);
+        }
+    </script>
+</div>
+</body>
+</html>

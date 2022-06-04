@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="../../static/layui/css/layui.css">
+    <title></title>
+</head>
+<body>
+<div th:fragment="header">
+    <div class="layui-logo layui-hide-xs layui-bg-black">大鲨鱼进销存系统</div>
+    <ul class="layui-nav layui-layout-right">
+        <li class="layui-nav-item layui-hide layui-show-md-inline-block">
+            <a href="javascript:">
+                <img src="https://pic.imgdb.cn/item/629bd00909475431291f4e92.jpg" class="layui-nav-img">
+                <!--<span th:text="${session.loginAdmin.name}"></span>-->
+            </a>
+            <dl class="layui-nav-child">
+                <dd><a href="">个人资料</a></dd>
+                <dd><a href="">设置</a></dd>
+                <dd><a href="">退出</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item" lay-header-event="menuRight" lay-unselect>
+            <a href="javascript:">
+                <i class="layui-icon layui-icon-more-vertical"></i>
+            </a>
+        </li>
+    </ul>
+    <script src="../../static/layui/layui.js"></script>
+    <script>
+        layui.use(['element', 'layer', 'util'], function () {
+            var element = layui.element
+                , layer = layui.layer
+                , util = layui.util
+                , $ = layui.$;
+
+            //头部事件
+            util.event('lay-header-event', {
+                //左侧菜单事件
+                menuLeft: function (othis) {
+                    layer.msg('展开左侧菜单的操作', {icon: 0});
+                }
+                , menuRight: function () {
+                    layer.open({
+                        type: 1
+                        , content: '<div style="padding: 15px;">这里啥也没有，有事儿我会告诉你的</div>'
+                        , area: ['260px', '100%']
+                        , offset: 'rt' //右上角
+                        , anim: 5
+                        , shadeClose: true
+                    });
+                }
+            });
+        });
+    </script>
+</div>
+</body>
+</html>

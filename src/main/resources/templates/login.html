@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>后台登录 - 大鲨鱼企业进销存系统</title>
+    <link href="../static/layui/css/layui.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../static/css/login.css"/>
+</head>
+<body>
+<div class="m-login-bg">
+    <div class="m-login">
+        <h3>后台系统登录</h3>
+        <div class="m-login-warp">
+            <form class="layui-form">
+                <div class="layui-form-item">
+                    <input type="text" name="username" required lay-verify="required" placeholder="用户名"
+                           autocomplete="off"
+                           class="layui-input">
+                </div>
+                <div class="layui-form-item">
+                    <input type="text" name="password" required lay-verify="required" placeholder="密码"
+                           autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-item m-login-btn">
+                    <div class="layui-inline">
+                        <button class="layui-btn layui-btn-normal" lay-submit lay-filter="loginForm">登录</button>
+                    </div>
+                    <div class="layui-inline">
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="../static/layui/layui.js"></script>
+<script>
+    layui.use(['form', 'layer'], function () {
+        var form = layui.form
+            , layer = layui.layer
+            , $ = layui.$;
+        form.on('submit(loginForm)', function (data) {
+            $.ajax({
+                type: "post",  //数据提交方式(post/get)
+                url: "/admin/doLogin",  //提交到的url
+                data: JSON.stringify(data.field),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",//返回的数据类型格式
+                success: function (result) {
+                    if (result.code === 200) {
+                        layer.msg(result.msg, {icon: 1, time: 1000});
+                        window.location.replace("/index");
+                    } else {
+                        layer.msg(result.msg, {icon: 2, time: 1000});
+                    }
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

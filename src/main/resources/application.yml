@@ -1,0 +1,19 @@
+mybatis:
+  # 指定mapper.xml的位置
+  mapper-locations: classpath:mapper/*.xml
+  # 扫描实体类的位置
+  type-aliases-package: com.shark.erp.entity
+  configuration:
+    # 默认开启驼峰命名法
+    map-underscore-to-camel-case: true
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/erp?serverTimezone=UTC
+    username: root
+    password: 12345678
+    # 在mysql-connector-java 5以后的版本中使用com.mysql.cj.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  mvc:
+    # 配置静态资源路径，static的所有子目录都可访问到
+    static-path-pattern: /static/**
