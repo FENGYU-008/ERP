@@ -50,8 +50,9 @@
     <div style="display: table-cell">
         <form class="layui-form" id="search_form">
             <div class="layui-input-block" style="display: table-cell">
-                <div class="layui-input-inline" style="width: 260px">
-                    <input type="text" name="key" placeholder="请输入姓名 支持模糊查询"
+                <label>&emsp;姓名&emsp;</label>
+                <div class="layui-input-inline" style="width: 200px">
+                    <input type="text" name="key" placeholder="姓名"
                            autocomplete="off" class="layui-input">
                 </div>
             </div>
@@ -129,7 +130,7 @@
                 case 'getCheckData':
                     var data = checkStatus.data;
                     if (data.length !== 0)
-                        layer.alert(JSON.stringify(data));
+                        parent.layer.alert(JSON.stringify(data));
                     break;
                 case 'add':
                     $("input[name='id']").removeAttr("readonly");

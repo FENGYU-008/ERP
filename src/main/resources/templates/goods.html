@@ -1,10 +1,329 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="../static/layui/css/layui.css" media="all">
+    <title></title>
 </head>
 <body>
-商品页
+
+<!--隐藏表单，用于添加和编辑行-->
+<div class="layui-row" style="display: none" id="open_div">
+    <form class="layui-form layui-form-pane">
+        <!--区分是添加还是编辑操作-->
+        <input type="hidden" name="action" id="action">
+        <div class="layui-form-item">
+            <label class="layui-form-label">ID</label>
+            <div class="layui-input-inline" style="width: 260px">
+                <input type="number" name="id" lay-verify="" placeholder="可留空，默认自增"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">分类</label>
+            <div class="layui-input-inline" style="width: 260px">
+                <input type="text" name="category" required lay-verify="required" placeholder="请输入分类"
+                       autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">商品名称</label>
+            <div class="layui-input-inline" style="width: 260px">
+                <input type="text" name="goodsName" required lay-verify="required" placeholder="请输入商品名称"
+                       autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">生产日期</label>
+            <div class="layui-input-inline" style="width: 260px">
+                <input type="text" name="productionTime" required lay-verify="required" placeholder="请输入生产日期"
+                       autocomplete="off" id="productionTime"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">进货日期</label>
+            <div class="layui-input-inline" style="width: 260px">
+                <input type="text" name="purchaseTime" required lay-verify="required" placeholder="请输入进货日期"
+                       autocomplete="off" id="purchaseTime"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">保质期</label>
+            <div class="layui-input-inline" style="width: 260px">
+                <input type="text" name="expirationTime" lay-verify="" placeholder="请输入保质期"
+                       autocomplete="off" id="expirationTime"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">单价</label>
+            <div class="layui-input-inline" style="width: 260px">
+                <input type="text" name="unitPrice" required lay-verify="required" placeholder="请输入单价"
+                       autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">库存量</label>
+            <div class="layui-input-inline" style="width: 260px">
+                <input type="text" name="inventory" required lay-verify="required" placeholder="请输入库存量"
+                       autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="hiddenForm">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--搜索栏-->
+<div style="margin: 10px 0 10px 1%;width: 99%">
+    <div style="display: table-cell">
+        <form class="layui-form" id="search_form">
+            <div class="layui-input-block" style="display: table-cell">
+                <label>&emsp;商品名称&emsp;</label>
+                <div class="layui-input-inline" style="width: 250px">
+                    <input type="text" name="key" placeholder="商品名称"
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-input-block" style="display: table-cell">
+                <label>&emsp;分类&emsp;</label>
+                <div class="layui-input-inline" style="width: 150px">
+                    <select name="select-category" id="select-category">
+                        <option value="">请选择分类</option>
+                    </select>
+                </div>
+            </div>
+            <div style="display: table-cell">
+                <button class="layui-btn layui-btn-sm layui-btn-danger" lay-submit lay-filter="search"
+                        style="margin-left: 15px"><i class="layui-icon">&#xe615;</i>搜&emsp;索
+                </button>
+                <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">
+                    <i class="layui-icon">&#xe631;</i>重&emsp;置
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!--数据表格-->
+<table class="layui-hide" id="dataTable" lay-filter="dataTable"></table>
+<!--自定义工具栏按钮-->
+<script type="text/html" id="toolbar">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+        <button class="layui-btn layui-btn-sm" lay-event="add">新增</button>
+        <button class="layui-btn layui-btn-sm" lay-event="refresh">刷新</button>
+    </div>
+</script>
+<!--行工具栏按钮-->
+<script type="text/html" id="bar">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script src="../static/layui/layui.js"></script>
+<script th:inline="none">
+    layui.use(function () { //亦可加载特定模块：layui.use(['layer','laydate'], callback)
+        //得到需要的内置组件
+        var layer = layui.layer //弹层
+            , laypage = layui.laypage //分页
+            , table = layui.table //表格
+            , form = layui.form //下拉菜单
+            , $ = layui.$
+            , laydate = layui.laydate;
+
+        //渲染选择框
+        $.ajax({
+            url: "/selectDistinctCategory",
+            type: "get",
+            dataType: "json",
+            success: function (result) {
+                var categories = document.getElementById("select-category");
+                for (var resultKey in result) {
+                    var option = document.createElement("option");
+                    option.setAttribute("value", resultKey);
+                    option.innerText = result[resultKey];
+                    categories.appendChild(option);
+                    form.render("select");
+                }
+            }
+        })
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#productionTime' //指定元素
+        });
+        laydate.render({
+            elem: '#purchaseTime' //指定元素
+        });
+        laydate.render({
+            elem: '#expirationTime' //指定元素
+        });
+
+        //执行一个 table 实例
+        table.render({
+            elem: '#dataTable'
+            , url: '/selectAllGoods' //数据接口
+            , title: '商品信息表'
+            , height: 523
+            , page: true //开启分页
+            , toolbar: '#toolbar' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+            , cols: [[ //表头
+                {type: 'checkbox', fixed: 'left'}
+                , {field: 'id', title: 'ID', Width: 150, sort: true, fixed: 'left'}
+                , {field: 'category', title: '分类', Width: 150}
+                , {field: 'goodsName', title: '商品名称', minWidth: 150}
+                , {field: 'productionTime', title: '生产日期', minWidth: 150}
+                , {field: 'purchaseTime', title: '进货日期', minWidth: 150}
+                , {field: 'expirationTime', title: '保质期', minWidth: 150}
+                , {field: 'unitPrice', title: '单价', Width: 100}
+                , {field: 'inventory', title: '库存量', Width: 100}
+                , {fixed: 'right', minWidth: 150, align: 'center', toolbar: '#bar'}
+            ]]
+            , parseData: function (res) { //逻辑分页
+                var result;
+                if (this.page.curr) {
+                    result = res.data.slice(this.limit * (this.page.curr - 1), this.limit * this.page.curr);
+                } else {
+                    result = res.data.slice(0, this.limit);
+                }
+                return {"code": res.code, "msg": res.msg, "count": res.count, "data": result};
+            }
+        });
+
+        //头工具栏事件
+        table.on('toolbar(dataTable)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch (obj.event) {
+                case 'getCheckData':
+                    var data = checkStatus.data;
+                    if (data.length !== 0)
+                        parent.layer.alert(JSON.stringify(data));
+                    break;
+                case 'add':
+                    $("input[name='id']").removeAttr("readonly");
+                    layer.open({
+                        type: 1,
+                        title: '新增',
+                        content: $('#open_div'),
+                        area: 'auto',
+                        shadeClose: true,
+                        success: function (layero, index) {
+                            $("input[name='action']").val('add');
+                        }
+                    });
+                    break;
+                case 'refresh':
+                    table.reload('dataTable', {
+                        url: '/selectAllGoods'
+                        , where: {} //设定异步数据接口的额外参数
+                    });
+                    break;
+            }
+        });
+
+        //行工具事件
+        table.on('tool(dataTable)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+                layer.confirm('你真的要删除吗？？', function (index) {
+                    obj.del();
+                    layer.close(index);
+                    //发送删除请求
+                    $.ajax({
+                        type: "delete",  //数据提交方式
+                        url: "/deleteGoods?id=" + data.id,  //提交到的url
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",//返回的数据类型格式
+                        success: function (result) {
+                            layer.msg(result.msg, {icon: 1, time: 1000});
+                        }, error: function (e) {
+                            layer.msg('ERROR', {icon: 2, time: 1000});
+                        }
+                    });
+                });
+            } else if (obj.event === 'edit') {
+                layer.open({
+                    type: 1,
+                    title: '编辑',
+                    content: $('#open_div'),
+                    area: 'auto',
+                    shadeClose: true,
+                    success: function (layero, index) {
+                        $("input[name='action']").val('edit');
+                        $("input[name='id']").val(data.id).prop("readonly", "readonly"); //链式调用
+                        $("input[name='category']").val(data.category);
+                        $("input[name='goodsName']").val(data.goodsName);
+                        $("input[name='productionTime']").val(data.productionTime);
+                        $("input[name='purchaseTime']").val(data.purchaseTime);
+                        $("input[name='expirationTime']").val(data.expirationTime);
+                        $("input[name='unitPrice']").val(data.unitPrice);
+                        $("input[name='inventory']").val(data.inventory);
+                    }
+                });
+            }
+        });
+
+        //隐藏表单提交事件
+        form.on('submit(hiddenForm)', function (data) {
+            $.ajax({
+                type: "post",  //数据提交方式
+                url: "/goodsAction?action=" + data.field['action'],  //提交到的url
+                data: JSON.stringify(data.field),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",//返回的数据类型格式
+                success: function (result) {
+                    if (result.code === 0)
+                        layer.msg(result.msg, {icon: 1, time: 1000});
+                    else
+                        layer.msg(result.msg, {icon: 2, time: 1000});
+                    //如果修改成功，表格重载
+                    table.reload('dataTable', {
+                        url: '/selectAllGoods'
+                        , where: {} //设定异步数据接口的额外参数
+                    });
+                }, error: function (e) {
+                    layer.msg('ERROR', {icon: 2, time: 1000});
+                }
+            });
+            layer.closeAll();
+            return false; //阻止表单跳转
+        });
+
+        //搜索提交事件
+        form.on('submit(search)', function (data) {
+            if ($("input[name='key']").val() !== "" || $("#select-category").val() !== "") {
+                var name = data.field['key'];
+                var surl;
+                if ($("#select-category").val() !== "") {
+                    var category = $("#select-category option:selected").text();
+                    surl = '/selectGoodsByNameAndCategory?name=' + name + '&category=' + category;
+                } else
+                    surl = 'selectGoodsByName?name=' + name;
+                table.reload('dataTable', {
+                    url: surl
+                    , where: {} //设定异步数据接口的额外参数
+                });
+                layer.msg("查询成功");
+            } else {
+                layer.msg("请输入查询条件！", {icon: 2, time: 1000});
+            }
+            return false;
+        })
+
+    });
+</script>
 </body>
 </html>
