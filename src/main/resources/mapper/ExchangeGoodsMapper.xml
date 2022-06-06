@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shark.erp.mapper.ExchangeGoodsMapper">
+    <select id="selectAllExchangeGoods" resultType="ExchangeGoods">
+        select *
+        from exchange_goods
+    </select>
+
+    <select id="selectExchangeGoodsByCustomerId" parameterType="java.lang.Integer" resultType="ExchangeGoods">
+        select *
+        from exchange_goods
+        where customer_id = #{key}
+    </select>
+
+    <insert id="insertExchangeGoods" parameterType="ExchangeGoods">
+        insert into exchange_goods
+        values (#{id}, #{goodsId}, #{goodsName}, #{customerId}, #{orderId}, #{exchangeTime}, #{state})
+    </insert>
+
+    <delete id="deleteExchangeGoods" parameterType="java.lang.Integer">
+        delete
+        from exchange_goods
+        where id = #{id}
+    </delete>
+
+    <update id="updateExchangeGoods" parameterType="ExchangeGoods">
+        update exchange_goods
+        set goods_id=#{goodsId},
+            goods_name=#{goodsName},
+            customer_id=#{customerId},
+            order_id=#{orderId},
+            exchange_time=#{exchangeTime},
+            state=#{state}
+        where id = #{id}
+    </update>
+
+    <update id="passExchangeGoodsById" parameterType="java.lang.Integer">
+        update exchange_goods
+        set state = '已审核'
+        where id = #{id};
+    </update>
+</mapper>

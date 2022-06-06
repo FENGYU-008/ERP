@@ -34,7 +34,7 @@
         where id = #{id}
     </update>
 
-    <update id="passById" parameterType="java.lang.Integer">
+    <update id="passReturnGoodsById" parameterType="java.lang.Integer">
         update return_goods
         set state = '已审核'
         where id = #{id};

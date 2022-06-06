@@ -1,26 +1,26 @@
 package com.shark.erp.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.shark.erp.entity.ReturnGoods;
-import com.shark.erp.mapper.ReturnGoodsMapper;
+import com.shark.erp.entity.ExchangeGoods;
+import com.shark.erp.mapper.ExchangeGoodsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class ReturnGoodsService {
+public class ExchangeGoodsService {
     @Autowired
-    ReturnGoodsMapper returnGoodsMapper;
+    ExchangeGoodsMapper exchangeGoodsMapper;
 
-    public JSONObject selectAllReturnGoods() {
+    public JSONObject selectAllExchangeGoods() {
         JSONObject result = new JSONObject();
         try {
-            List<ReturnGoods> returnGoodsList = returnGoodsMapper.selectAllReturnGoods();
+            List<ExchangeGoods> exchangeGoodsList = exchangeGoodsMapper.selectAllExchangeGoods();
             result.put("code", 0);
             result.put("msg", "查询成功");
-            result.put("count", returnGoodsList.size());
-            result.put("data", returnGoodsList);
+            result.put("count", exchangeGoodsList.size());
+            result.put("data", exchangeGoodsList);
         } catch (Exception ex) {
             result.put("code", 500);
             result.put("msg", "error");
@@ -28,14 +28,14 @@ public class ReturnGoodsService {
         return result;
     }
 
-    public JSONObject selectReturnGoodsByCustomerId(int customerId) {
+    public JSONObject selectExchangeGoodsByCustomerId(int customerId) {
         JSONObject result = new JSONObject();
         try {
-            List<ReturnGoods> returnGoodsList = returnGoodsMapper.selectReturnGoodsByCustomerId(customerId);
+            List<ExchangeGoods> exchangeGoodsList = exchangeGoodsMapper.selectExchangeGoodsByCustomerId(customerId);
             result.put("code", 0);
             result.put("msg", "查询成功");
-            result.put("count", returnGoodsList.size());
-            result.put("data", returnGoodsList);
+            result.put("count", exchangeGoodsList.size());
+            result.put("data", exchangeGoodsList);
         } catch (Exception ex) {
             ex.printStackTrace();
             result.put("code", 500);
@@ -44,10 +44,10 @@ public class ReturnGoodsService {
         return result;
     }
 
-    public JSONObject insertReturnGoods(ReturnGoods returnGoods) {
+    public JSONObject insertExchangeGoods(ExchangeGoods exchangeGoods) {
         JSONObject result = new JSONObject();
         try {
-            returnGoodsMapper.insertReturnGoods(returnGoods);
+            exchangeGoodsMapper.insertExchangeGoods(exchangeGoods);
             result.put("code", 0);
             result.put("msg", "插入成功");
         } catch (Exception ex) {
@@ -57,10 +57,10 @@ public class ReturnGoodsService {
         return result;
     }
 
-    public JSONObject deleteReturnGoods(int id) {
+    public JSONObject deleteExchangeGoods(int id) {
         JSONObject result = new JSONObject();
         try {
-            returnGoodsMapper.deleteReturnGoods(id);
+            exchangeGoodsMapper.deleteExchangeGoods(id);
             result.put("code", 0);
             result.put("msg", "删除成功");
         } catch (Exception ex) {
@@ -70,10 +70,10 @@ public class ReturnGoodsService {
         return result;
     }
 
-    public JSONObject updateReturnGoods(ReturnGoods returnGoods) {
+    public JSONObject updateExchangeGoods(ExchangeGoods exchangeGoods) {
         JSONObject result = new JSONObject();
         try {
-            returnGoodsMapper.updateReturnGoods(returnGoods);
+            exchangeGoodsMapper.updateExchangeGoods(exchangeGoods);
             result.put("code", 0);
             result.put("msg", "修改成功");
         } catch (Exception ex) {
@@ -83,10 +83,10 @@ public class ReturnGoodsService {
         return result;
     }
 
-    public JSONObject passReturnGoodsById(int id) {
+    public JSONObject passExchangeGoodsById(int id) {
         JSONObject result = new JSONObject();
         try {
-            returnGoodsMapper.passReturnGoodsById(id);
+            exchangeGoodsMapper.passExchangeGoodsById(id);
             result.put("code", 0);
             result.put("msg", "操作成功");
         } catch (Exception ex) {

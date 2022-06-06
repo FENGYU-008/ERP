@@ -56,8 +56,8 @@ public class ReturnGoodsController {
     }
 
     @ResponseBody
-    @PutMapping("/passById")
-    public JSONObject passById(@RequestParam("id") int id) {
-        return returnGoodsService.passById(id);
+    @PutMapping("/passReturnGoodsById")
+    public JSONObject passReturnGoodsById(@RequestParam("id") int id) {
+        return returnGoodsService.passReturnGoodsById(id);
     }
 }

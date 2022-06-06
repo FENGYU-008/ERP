@@ -19,5 +19,5 @@ public interface ReturnGoodsMapper {
 
     void updateReturnGoods(ReturnGoods returnGoods);
 
-    void passById(@Param("id") int id);
+    void passReturnGoodsById(@Param("id") int id);
 }
