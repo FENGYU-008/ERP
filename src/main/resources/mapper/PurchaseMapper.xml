@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shark.erp.mapper.PurchaseMapper">
+    <select id="selectAllPurchase" resultType="Purchase">
+        select *
+        from purchase
+    </select>
+
+    <select id="selectPurchaseBySupplier" parameterType="java.lang.String" resultType="Purchase">
+        select *
+        from purchase
+        where supplier like '%${key}%'  <!--#{ }写在字符串中不能识别，必须这么写-->
+    </select>
+
+    <insert id="insertPurchase" parameterType="Purchase">
+        insert into purchase
+        values (#{id}, #{goodsId}, #{supplier}, #{quantity}, #{purchasePrice}, #{purchaseTime})
+    </insert>
+
+    <delete id="deletePurchase" parameterType="java.lang.Integer">
+        delete
+        from purchase
+        where id = #{id}
+    </delete>
+
+    <update id="updatePurchase" parameterType="Purchase">
+        update purchase
+        set goods_id=#{goodsId}
+          , supplier=#{supplier}
+          , quantity=#{quantity}
+          , purchase_price=#{purchasePrice}
+          , purchase_time=#{purchaseTime}
+        where id = #{id}
+    </update>
+
+</mapper>

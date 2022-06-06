@@ -55,4 +55,5 @@ public class Purchase {
     public void setPurchaseTime(String purchaseTime) {
         this.purchaseTime = purchaseTime;
     }
+
 }
