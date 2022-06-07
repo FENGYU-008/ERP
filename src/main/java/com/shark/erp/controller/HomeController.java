@@ -3,20 +3,21 @@ package com.shark.erp.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 public class HomeController {
-    @RequestMapping("/")
-    public String Hello() {
-        return "/login";
-    }
 
     @RequestMapping("/index")
     public String index() {
         return "index";
     }
 
-    @RequestMapping("/login")
-    public String login() {
+    @RequestMapping(value = {"/", "/login"})
+    public String login(HttpSession session) {
+        Object loginUser = session.getAttribute("user");
+        if (loginUser != null)
+            return "index";
         return "login";
     }
 
