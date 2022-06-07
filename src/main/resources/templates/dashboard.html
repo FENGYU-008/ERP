@@ -7,6 +7,52 @@
     <link rel="stylesheet" href="../static/layui/css/layui.css" media="all">
 </head>
 <body>
-仪表盘
+<div class="layui-row layui-col-space15">
+    <div class="layui-col-md6">
+        <div class="layui-panel">
+            <div style="padding: 10px;">
+                <div class="layui-card">
+                    <div class="layui-card-header">
+                        <i class="layui-icon">&#xe665;</i>
+                        商品统计
+                    </div>
+                    <div class="layui-card-body">
+                        <strong id="goods_counts">test</strong><br>
+                        当前分类总记录数<br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-md6">
+        <div class="layui-panel">
+            <div style="padding: 10px;">
+                <div class="layui-card">
+                    <div class="layui-card-header">
+                        <i class="layui-icon">&#xe665;</i>
+                        销售额统计
+                    </div>
+                    <div class="layui-card-body">
+                        <strong id="sales_amount">test</strong><br>
+                        总销售额<br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+<script>
+    let goods_counts = $.ajax({
+        url: "/selectGoodsCounts",
+        async: false
+    }).responseText;
+    $("#goods_counts").text(goods_counts);
+    let sales_amount = $.ajax({
+        url: "/selectSalesAmount",
+        async: false
+    }).responseText;
+    $("#sales_amount").text(sales_amount);
+</script>
 </body>
 </html>

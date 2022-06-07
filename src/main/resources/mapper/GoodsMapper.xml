@@ -48,4 +48,9 @@
         where goods_name like '%${name}%'
           and category = #{category}
     </select>
+
+    <select id="selectGoodsCounts" resultType="java.lang.Integer">
+        select count(*)
+        from goods
+    </select>
 </mapper>

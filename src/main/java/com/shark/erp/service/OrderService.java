@@ -82,4 +82,8 @@ public class OrderService {
         }
         return result;
     }
+
+    public String selectSalesAmount() {
+        return orderMapper.selectSalesAmount();
+    }
 }

@@ -68,4 +68,10 @@ public class GoodsController {
     public JSONObject selectGoodsByNameAndCategory(@RequestParam("name") String name, @RequestParam("category") String category) {
         return goodsService.selectGoodsByNameAndCategory(name, category);
     }
+
+    @ResponseBody
+    @GetMapping("/selectGoodsCounts")
+    public Integer selectGoodsCounts() {
+        return goodsService.selectGoodsCounts();
+    }
 }

@@ -14,9 +14,6 @@ public class GoodsMonitorService {
     GoodsMonitorMapper goodsMonitorMapper;
 
     /**
-     * 不想写sql语句也不想写JavaScript，所以把逻辑直接写死在程序里
-     * TODO 烦死了
-     *
      * @return result 返回table默认规定的数据格式
      */
     public JSONObject selectAllGoodsMonitor() {

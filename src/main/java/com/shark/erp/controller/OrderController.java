@@ -54,4 +54,10 @@ public class OrderController {
         }
         return "404";
     }
+
+    @ResponseBody
+    @GetMapping("/selectSalesAmount")
+    public String selectSalesAmount() {
+        return orderService.selectSalesAmount();
+    }
 }

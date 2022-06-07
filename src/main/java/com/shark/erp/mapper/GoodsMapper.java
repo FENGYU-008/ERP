@@ -21,4 +21,6 @@ public interface GoodsMapper {
     List<String> selectDistinctCategory();
 
     List<Goods> selectGoodsByNameAndCategory(@Param("name") String name, @Param("category") String category);
+
+    Integer selectGoodsCounts();
 }

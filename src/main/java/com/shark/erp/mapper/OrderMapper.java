@@ -17,4 +17,6 @@ public interface OrderMapper {
     void deleteOrder(@Param("id") int id);
 
     void updateOrder(Order order);
+
+    String selectSalesAmount();
 }

@@ -106,4 +106,8 @@ public class GoodsService {
         }
         return result;
     }
+
+    public Integer selectGoodsCounts() {
+        return goodsMapper.selectGoodsCounts();
+    }
 }

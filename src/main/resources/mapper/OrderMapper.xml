@@ -39,4 +39,8 @@
         where id = #{id}
     </update>
 
+    <select id="selectSalesAmount" resultType="java.lang.String">
+        select format(sum(amount_payable), 2)
+        from `order`;
+    </select>
 </mapper>
