@@ -13,12 +13,12 @@
         <li class="layui-nav-item layui-hide layui-show-md-inline-block">
             <a href="javascript:">
                 <img src="https://pic.imgdb.cn/item/629bd00909475431291f4e92.jpg" class="layui-nav-img">
-                <!--<span th:text="${session.loginAdmin.name}"></span>-->
+                <span th:text="${session.user.username}"></span>
             </a>
             <dl class="layui-nav-child">
-                <dd><a href="">个人资料</a></dd>
-                <dd><a href="">设置</a></dd>
-                <dd><a href="">退出</a></dd>
+                <dd><a href="javascript:">个人资料</a></dd>
+                <dd><a href="javascript:">设置</a></dd>
+                <dd><a href="/admin/doLogout">退出</a></dd>
             </dl>
         </li>
         <li class="layui-nav-item" lay-header-event="menuRight" lay-unselect>
