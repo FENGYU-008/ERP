@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Title</title>
+    <link rel="stylesheet" href="../static/layui/css/layui.css" media="all">
+</head>
+<body>
+<!--数据表格-->
+<table class="layui-hide" id="dataTable" lay-filter="dataTable"></table>
+
+<script src="../static/layui/layui.js"></script>
+<script th:inline="none">
+    layui.use(function () {
+        let table = layui.table
+            , $ = layui.$;
+        table.render({
+            elem: '#dataTable'
+            , url: '/selectAllGoodsMonitor' //数据接口
+            , page: false //开启分页
+            , cols: [[ //表头
+                {field: 'id', title: 'ID', sort: true, fixed: 'left'}
+                , {field: 'goodsName', title: '商品名称'}
+                , {field: 'timeDiff', title: '时间差'}
+                , {field: 'inventory', title: '库存量'}
+                , {field: 'prompt', title: '提示', minWidth: 350}
+            ]]
+            , parseData: function (res) {
+                for (let i in res['data']) {
+                    res['data'][i].prompt = '';
+                    let timeDiff = res['data'][i].timeDiff;
+                    if (timeDiff >= 0) {
+                        res['data'][i].timeDiff = '距离过期还有' + timeDiff + '天';
+                        if (timeDiff <= 7) {
+                            res['data'][i].prompt += '快过期了哦';
+                        }
+                    } else {
+                        res['data'][i].timeDiff = '已过期' + String(timeDiff).substring(1, String(timeDiff).length) + '天';
+                    }
+                    let inventory = res['data'][i].inventory;
+                    if (inventory <= 20) {
+                        if (res['data'][i].prompt !== '') res['data'][i].prompt += '，还有，';
+                        res['data'][i].prompt += '仓库快见底了，记得补货啊';
+                    }
+                }
+                return res;
+            }
+        });
+    })
+</script>
+</body>
+</html>

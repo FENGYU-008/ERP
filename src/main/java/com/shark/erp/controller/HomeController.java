@@ -54,4 +54,9 @@ public class HomeController {
     public String dashboard() {
         return "dashboard";
     }
+
+    @RequestMapping("/goods_monitor")
+    public String goods_monitor() {
+        return "goods_monitor";
+    }
 }
